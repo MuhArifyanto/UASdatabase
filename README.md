@@ -17,7 +17,9 @@ INSERT INTO Perusahaan VALUES
 SELECT * FROM Perusahaan;
 ```
 ***Output :***
-![Screenshot (483)](https://github.com/Maullynn/UASBasisData/assets/144296695/153faa4a-42de-4312-83fc-9df5deb4f021)
+
+![tugas uas 1](https://github.com/MuhArifyanto/UASdatabase/assets/147913440/8c8165af-a0cd-44b5-8ec5-4e433508ab83)
+
 ***Query MySQL Pada Tabel Departemen***
 ```
 CREATE TABLE Departemen(
@@ -71,6 +73,7 @@ SELECT * FROM Project;
 ```
 ***Output :***
 
+![tugas uas 2](https://github.com/MuhArifyanto/UASdatabase/assets/147913440/44e8c213-fa3e-47b2-b248-bc5b9b292742)
 
 ***Query MySQL Pada Tabel Project Deatil***
 ```sql
@@ -98,6 +101,90 @@ SELECT * FROM Project_detail;
 
 ![tugas uas 3](https://github.com/MuhArifyanto/UASdatabase/assets/147913440/d31fd2b5-f051-434b-bdf0-59a8746d4a55)
 
+# Soal uas
+### Berdasarkan ERD dan Sampel Data diatas buatla Query SQL untuk:
+1. Menampilkan Nama Karyawan yang Berada di Departemen yang Dipimpin
+oleh Manajer dengan Nama 'Rika'
+2. Menampilkan Nama Proyek yang dikerjakan oleh Karyawan dari
+Departemen 'RnD'
+3. Menampilkan Nama Karyawan yang Terlibat dalam Lebih dari Satu Proyek
+4. Menampilkan Nama Proyek yang melibatkan Karyawan terbanyak.
+5. Menampilkan Nama Proyek yang Diikuti oleh Karyawan dengan Gaji Pokok
+Kurang dari 3 Juta
+
+
+
+## 1. Menampilkan Nama Karyawan yang Berada di Departemen yang Dipimpin oleh Manajer dengan Nama 'Rika'
+
+***Input :***
+
+sql
+SELECT k.nama 
+FROM Karyawan k
+JOIN Departemen d ON k.id_dept = d.id_dept
+WHERE d.manajer_nik = (
+    SELECT nik 
+    FROM Karyawan 
+    WHERE nama = 'Rika'
+);
+
+
+
+## 2.Menampilkan Nama Proyek yang dikerjakan oleh Karyawan dari Departemen 'RnD'
+***input :***
+
+sql
+SELECT DISTINCT p.nama 
+FROM Project p
+JOIN Project_detail pd ON p.id_proj = pd.id_proj
+JOIN Karyawan k ON pd.nik = k.nik
+WHERE k.id_dept = (
+    SELECT id_dept 
+    FROM Departemen 
+    WHERE nama = 'RnD'
+);
+
+
+
+## 3. Menampilkan Nama Karyawan yang Terlibat dalam Lebih dari Satu Proyek 
+
+***Input :***
+
+sql
+SELECT k.nama 
+FROM Karyawan k
+JOIN Project_detail pd ON k.nik = pd.nik
+GROUP BY k.nama
+HAVING COUNT(pd.id_proj) > 1;
+
+
+## 4.Menampilkan Nama Proyek yang melibatkan Karyawan terbanyak.
+***Input :***
+
+SQL
+SELECT p.nama 
+FROM Project p
+JOIN Project_detail pd ON p.id_proj = pd.id_proj
+GROUP BY p.nama
+ORDER BY COUNT(pd.nik) DESC
+LIMIT 1;
+
+
+## 5. Menampilkan Nama Proyek yang Diikuti oleh Karyawan dengan Gaji Pokok Kurang dari 3 Juta
+
+***Input :***
+
+sql
+SELECT DISTINCT p.nama 
+FROM Project p
+JOIN Project_detail pd ON p.id_proj = pd.id_proj
+JOIN Karyawan k ON pd.nik = k.nik
+WHERE k.gaji_pokok < 3000000;
+
+
+***Output :***
+
+![tugas uas 4](https://github.com/MuhArifyanto/UASdatabase/assets/147913440/35c327f1-80e1-4c7f-8c46-6b91168bea3c)
 
 ## if you get trouble "Cannot add or update a child row: a foreign key constraint fails| MySQL error Solution"
 ```
